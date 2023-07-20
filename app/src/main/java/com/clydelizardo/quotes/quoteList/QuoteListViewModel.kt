@@ -12,6 +12,7 @@ import com.clydelizardo.quotes.repository.model.Quote
 import com.clydelizardo.quotes.repository.paging.QuoteListPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
@@ -21,22 +22,14 @@ class QuoteListViewModel @Inject constructor(
     private val repository: QuoteRepository,
 ) : ViewModel() {
     private val _filter = MutableStateFlow<QuoteListFilter?>(null)
-    private val _pager = _filter.flatMapLatest {
-        Pager(PagingConfig(pageSize = 25)) {
+    val filter = _filter.asStateFlow()
+    val pager = _filter.flatMapLatest {
+        Pager(PagingConfig(pageSize = 25, prefetchDistance = 1, initialLoadSize = 1)) {
             QuoteListPagingSource(repository, it)
         }.flow.cachedIn(viewModelScope)
-    }
-
-    val state = _filter.combine(_pager) { filter, pager ->
-        QuoteListState(filter, pager)
     }
 
     fun setFilter(filter: QuoteListFilter?) {
         _filter.value = filter
     }
 }
-
-data class QuoteListState(
-    val filter: QuoteListFilter? = null,
-    val pagingDate: PagingData<Quote>? = null,
-)
