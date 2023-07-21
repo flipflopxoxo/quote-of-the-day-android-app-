@@ -13,22 +13,22 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.clydelizardo.quotes.qotd.QuoteOfTheDayViewModel
-import com.clydelizardo.quotes.ui.theme.QuotesTestTheme
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.clydelizardo.quotes.qotd.QuoteOfTheDayViewModel
 import com.clydelizardo.quotes.quoteList.QuoteListViewModel
 import com.clydelizardo.quotes.ui.QuoteListView
 import com.clydelizardo.quotes.ui.QuoteOfTheDayPage
+import com.clydelizardo.quotes.ui.theme.QuotesTestTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -55,13 +55,11 @@ class MainActivity : ComponentActivity() {
                     ) {
                         when (selectedTab) {
                             R.string.random -> {
-                                val quoteOfTheDayState by quoteOfTheDayViewModel.state.observeAsState()
-                                quoteOfTheDayState?.let {
-                                    QuoteOfTheDayPage(
-                                        quoteOfTheDayState = it,
-                                        onRefresh = quoteOfTheDayViewModel::refresh
-                                    )
-                                }
+                                val quoteOfTheDayState by quoteOfTheDayViewModel.state.collectAsState()
+                                QuoteOfTheDayPage(
+                                    quoteOfTheDayState = quoteOfTheDayState,
+                                    onRefresh = quoteOfTheDayViewModel::refresh
+                                )
                             }
 
                             R.string.explore -> {

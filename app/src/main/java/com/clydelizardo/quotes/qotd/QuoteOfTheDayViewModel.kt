@@ -1,12 +1,14 @@
 package com.clydelizardo.quotes.qotd
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clydelizardo.quotes.repository.QuoteRepository
 import com.clydelizardo.quotes.repository.model.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,30 +23,36 @@ val ErrorQuote = Quote(
 class QuoteOfTheDayViewModel @Inject constructor(
     private val quoteRepository: QuoteRepository,
 ) : ViewModel() {
-    private val _state = MutableLiveData(QuoteOfTheDayState())
-    val state: LiveData<QuoteOfTheDayState>
-        get() = _state
+    private val _state = MutableStateFlow(QuoteOfTheDayState())
+    val state: StateFlow<QuoteOfTheDayState>
+        get() = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
             val quoteOfTheDay = quoteRepository.getQuoteOfTheDay()
-            _state.value = _state.value!!.copy(
-                isLoading = false,
-                quote = quoteOfTheDay.getOrNull() ?: ErrorQuote
-            )
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    quote = quoteOfTheDay.getOrNull() ?: ErrorQuote
+                )
+            }
         }
     }
 
     fun refresh() {
         viewModelScope.launch {
-            _state.value = _state.value!!.copy(
-                isLoading = true
-            )
+            _state.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
             val quoteOfTheDay = quoteRepository.getQuoteOfTheDay()
-            _state.value = _state.value!!.copy(
-                isLoading = false,
-                quote = quoteOfTheDay.getOrNull() ?: ErrorQuote
-            )
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    quote = quoteOfTheDay.getOrNull() ?: ErrorQuote
+                )
+            }
         }
     }
 }

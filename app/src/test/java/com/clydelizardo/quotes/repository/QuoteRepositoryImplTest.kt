@@ -4,36 +4,17 @@ import com.clydelizardo.quotes.api.QuoteService
 import com.clydelizardo.quotes.api.model.QuoteListResponse
 import com.clydelizardo.quotes.api.model.QuoteOfTheDayResponse
 import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.testApiQuote
+import com.clydelizardo.quotes.testRepositoryQuote
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
-import com.clydelizardo.quotes.api.model.Quote as ApiQuote
 
 class QuoteRepositoryImplTest {
-    val testApiQuote = ApiQuote(
-        id = 0,
-        dialogue = false,
-        private = false,
-        tags = emptyList(),
-        url = "http://google.com",
-        favoritesCount = 0,
-        upvotesCount = 0,
-        downvotesCount = 0,
-        author = "me",
-        authorPermalink = "http://google.com",
-        body = "Hello world"
-    )
-    val testRepositoryQuote = Quote(
-        id = 0,
-        content = "Hello world",
-        author = "me",
-        tags = emptySet()
-    )
-
     lateinit var service: QuoteService
     lateinit var quoteRepositoryImpl: QuoteRepositoryImpl
 
