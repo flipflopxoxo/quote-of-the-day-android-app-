@@ -29,7 +29,7 @@ fun QuoteListViewPreview() {
         tags = setOf("perception", "cool", "smart")
     )
 
-    QuoteListItem(quote = quote, index = 0)
+    QuoteListItem(quote = quote)
 }
 
 @Composable
@@ -46,7 +46,7 @@ fun QuoteListView(
         }) { index ->
             val quote = lazyPagingItems[index]
             if (quote != null) {
-                QuoteListItem(index = index, quote = quote)
+                QuoteListItem(quote = quote)
             }
         }
         val loadStates = lazyPagingItems.loadState.source
@@ -70,7 +70,7 @@ fun QuoteListView(
 }
 
 @Composable
-fun QuoteListItem(quote: Quote, index: Int) {
+fun QuoteListItem(quote: Quote) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
