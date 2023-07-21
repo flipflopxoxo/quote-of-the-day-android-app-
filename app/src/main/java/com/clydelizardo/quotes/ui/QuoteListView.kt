@@ -43,7 +43,7 @@ fun QuoteListView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(lazyPagingItems.itemCount, key = {
-            val id = lazyPagingItems[it]?.id
+            val id = it
             if (id != null) " $id" else "$it "
         }) { index ->
             val quote = lazyPagingItems[index]
