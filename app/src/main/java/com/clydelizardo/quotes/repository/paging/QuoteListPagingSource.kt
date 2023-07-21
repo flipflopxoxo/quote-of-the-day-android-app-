@@ -9,8 +9,8 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class QuoteListPagingSource @Inject constructor(
-    val quoteRepository: QuoteRepository,
-    val filter: QuoteListFilter? = null,
+    private val quoteRepository: QuoteRepository,
+    private val filter: QuoteListFilter? = null,
 ) : PagingSource<Int, Quote>() {
     override fun getRefreshKey(state: PagingState<Int, Quote>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
