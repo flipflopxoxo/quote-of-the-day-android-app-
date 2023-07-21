@@ -15,8 +15,8 @@ import org.junit.Before
 import org.junit.Test
 
 class QuoteRepositoryImplTest {
-    lateinit var service: QuoteService
-    lateinit var quoteRepositoryImpl: QuoteRepositoryImpl
+    private lateinit var service: QuoteService
+    private lateinit var quoteRepositoryImpl: QuoteRepositoryImpl
 
     @Before
     fun setUp() {
@@ -24,7 +24,7 @@ class QuoteRepositoryImplTest {
         quoteRepositoryImpl = QuoteRepositoryImpl(service)
     }
 
-    @Test()
+    @Test
     fun givenQotdFails_resultReturnsFailedResult() = runTest {
         coEvery { service.quoteOfTheDay() } throws Exception()
 
@@ -33,7 +33,7 @@ class QuoteRepositoryImplTest {
         assertNotNull(quoteOfTheDay.exceptionOrNull())
     }
 
-    @Test()
+    @Test
     fun givenQotdPasses_resultReturnsSuccessResult() = runTest {
         coEvery { service.quoteOfTheDay() } returns QuoteOfTheDayResponse(
             qotdDate = "",
@@ -53,7 +53,7 @@ class QuoteRepositoryImplTest {
         )
     }
 
-    @Test()
+    @Test
     fun givenQuoteListFails_resultReturnsFailedResult() = runTest {
         coEvery { service.quoteList(any(), any(), any()) } throws Exception()
 
@@ -62,7 +62,7 @@ class QuoteRepositoryImplTest {
         assertNotNull(quoteOfTheDay.exceptionOrNull())
     }
 
-    @Test()
+    @Test
     fun givenQuoteListPasses_resultReturnsSuccessResult() {
         runTest {
             coEvery { service.quoteList(any(), any(), any()) } returns QuoteListResponse(

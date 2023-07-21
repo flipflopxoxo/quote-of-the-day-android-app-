@@ -20,8 +20,8 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class QuoteListViewModelTest {
-    lateinit var repository: QuoteRepository
-    lateinit var viewModel: QuoteOfTheDayViewModel
+    private lateinit var repository: QuoteRepository
+    private lateinit var viewModel: QuoteOfTheDayViewModel
 
     @Before
     fun setUp() {
@@ -29,7 +29,7 @@ class QuoteListViewModelTest {
         repository = mockk()
     }
 
-    fun createViewModel() {
+    private fun createViewModel() {
         viewModel = QuoteOfTheDayViewModel(repository)
     }
 
