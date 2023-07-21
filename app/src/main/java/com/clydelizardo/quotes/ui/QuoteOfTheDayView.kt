@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
@@ -52,6 +53,7 @@ fun QuoteOfTheDayPage(quoteOfTheDayState: QuoteOfTheDayState, onRefresh: (() -> 
                     modifier = Modifier
                         .size(128.dp)
                         .align(Alignment.Center)
+                        .testTag("loading spinner")
                 )
             }
         } else {
@@ -82,10 +84,10 @@ fun QuoteOfTheDayView(quote: Quote, onRefresh: (() -> Unit)? = null) {
             lineHeight = MaterialTheme.typography.headlineLarge.lineHeight * 1.2
         )
         if (onRefresh != null) {
-            IconButton(onClick = onRefresh, modifier = Modifier.align(Alignment.BottomEnd)) {
+            IconButton(onClick = onRefresh, modifier = Modifier.align(Alignment.BottomEnd).testTag("refresh button")) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_refresh_24),
-                    contentDescription = null,
+                    contentDescription = "get a new quote",
                 )
             }
         }
