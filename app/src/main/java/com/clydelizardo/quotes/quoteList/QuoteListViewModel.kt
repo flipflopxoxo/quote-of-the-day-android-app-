@@ -15,6 +15,6 @@ class QuoteListViewModel @Inject constructor(
     private val repository: QuoteRepository,
 ) : ViewModel() {
     val pager = Pager(PagingConfig(pageSize = 25, prefetchDistance = 1, initialLoadSize = 1)) {
-        QuoteListPagingSource(repository, null)
+        QuoteListPagingSource(repository)
     }.flow.cachedIn(viewModelScope)
 }

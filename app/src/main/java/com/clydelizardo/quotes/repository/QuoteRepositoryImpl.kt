@@ -26,7 +26,6 @@ class QuoteRepositoryImpl @Inject constructor(
 
     override suspend fun getQuoteList(
         pageNumber: Int?,
-        quoteListFilter: QuoteListFilter?,
     ): Result<List<Quote>> {
         return try {
             Result.success(quoteService.quoteList(null, null, pageNumber).quotes.map(::quote))

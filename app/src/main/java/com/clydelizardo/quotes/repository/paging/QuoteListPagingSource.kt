@@ -2,7 +2,6 @@ package com.clydelizardo.quotes.repository.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.clydelizardo.quotes.repository.QuoteListFilter
 import com.clydelizardo.quotes.repository.QuoteRepository
 import com.clydelizardo.quotes.repository.model.Quote
 import java.lang.Exception
@@ -10,7 +9,6 @@ import javax.inject.Inject
 
 class QuoteListPagingSource @Inject constructor(
     private val quoteRepository: QuoteRepository,
-    private val filter: QuoteListFilter? = null,
 ) : PagingSource<Int, Quote>() {
     override fun getRefreshKey(state: PagingState<Int, Quote>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -22,7 +20,7 @@ class QuoteListPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Quote> {
         val pageNumber = params.key ?: 1
         return try {
-            val result = quoteRepository.getQuoteList(pageNumber, filter)
+            val result = quoteRepository.getQuoteList(pageNumber)
             val quoteList = result.getOrThrow()
             LoadResult.Page(
                 quoteList,
