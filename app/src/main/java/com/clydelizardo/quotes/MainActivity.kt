@@ -22,8 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.clydelizardo.quotes.quoteList.QuoteListViewModel
 import com.clydelizardo.quotes.ui.QuoteListView
@@ -39,11 +40,11 @@ class MainActivity : ComponentActivity() {
             QuotesTestTheme {
                 // A surface container using the 'background' color from the theme
                 val tabs = mapOf(
-                    "Random" to R.drawable.baseline_card_giftcard_24,
-                    "Search" to R.drawable.baseline_search_24
+                    R.string.random to R.drawable.baseline_card_giftcard_24,
+                    R.string.explore to R.drawable.baseline_search_24
                 )
-                var selectedTab by remember {
-                    mutableStateOf("Random")
+                var selectedTab by rememberSaveable {
+                    mutableStateOf(R.string.random)
                 }
                 Column {
                     Surface(
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         when (selectedTab) {
-                            "Random" -> {
+                            R.string.random -> {
                                 val quoteOfTheDayState by quoteOfTheDayViewModel.state.observeAsState()
                                 quoteOfTheDayState?.let {
                                     QuoteOfTheDayPage(
@@ -62,8 +63,10 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
-                            "Search" -> {
-                                val lazyPagingItems = quoteListViewModel.pager.collectAsLazyPagingItems()
+
+                            R.string.explore -> {
+                                val lazyPagingItems =
+                                    quoteListViewModel.pager.collectAsLazyPagingItems()
                                 QuoteListView(lazyPagingItems)
                             }
                         }
@@ -71,14 +74,14 @@ class MainActivity : ComponentActivity() {
                     NavigationBar(modifier = Modifier.fillMaxWidth()) {
                         tabs.forEach {
                             val icon = it.value
-                            val tabName = it.key
+                            val tabId = it.key
                             NavigationBarItem(
                                 icon = {
                                     Icon(painterResource(id = icon), contentDescription = null)
                                 },
-                                label = { Text(tabName) },
-                                selected = selectedTab == tabName,
-                                onClick = { selectedTab = tabName }
+                                label = { Text(stringResource(id = tabId)) },
+                                selected = selectedTab == tabId,
+                                onClick = { selectedTab = tabId }
                             )
                         }
                     }

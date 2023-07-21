@@ -7,7 +7,7 @@ data class Quote(
     @SerializedName("id") val id: Int,
     @SerializedName("dialogue") val dialogue: Boolean,
     @SerializedName("private") val private: Boolean,
-    @SerializedName("tags") val tags: ArrayList<String> = arrayListOf(),
+    @SerializedName("tags") val tags: List<String> = emptyList(),
     @SerializedName("url") val url: String,
     @SerializedName("favorites_count") val favoritesCount: Int,
     @SerializedName("upvotes_count") val upvotesCount: Int,

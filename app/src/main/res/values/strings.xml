@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Quotes</string>
     <string name="api_key">f7b61b3e0e60d70067615fb6a78a4090</string>
+
+    <string name="random">Random</string>
+    <string name="explore">Explore</string>
 </resources>

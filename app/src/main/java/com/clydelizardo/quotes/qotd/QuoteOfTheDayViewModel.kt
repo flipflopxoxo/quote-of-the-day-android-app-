@@ -7,10 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.clydelizardo.quotes.repository.QuoteRepository
 import com.clydelizardo.quotes.repository.model.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+val ErrorQuote = Quote(
+    -1,
+    content = "Sorry, I couldn't find a good quote.",
+    author = "the phone",
+    tags = emptySet()
+)
 
 @HiltViewModel
 class QuoteOfTheDayViewModel @Inject constructor(
@@ -22,12 +27,10 @@ class QuoteOfTheDayViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val quoteOfTheDay = withContext(Dispatchers.IO) {
-                quoteRepository.getQuoteOfTheDay()
-            }
+            val quoteOfTheDay = quoteRepository.getQuoteOfTheDay()
             _state.value = _state.value!!.copy(
                 isLoading = false,
-                quote = quoteOfTheDay
+                quote = quoteOfTheDay.getOrNull() ?: ErrorQuote
             )
         }
     }
@@ -37,12 +40,10 @@ class QuoteOfTheDayViewModel @Inject constructor(
             _state.value = _state.value!!.copy(
                 isLoading = true
             )
-            val quoteOfTheDay = withContext(Dispatchers.IO) {
-                quoteRepository.getQuoteOfTheDay()
-            }
+            val quoteOfTheDay = quoteRepository.getQuoteOfTheDay()
             _state.value = _state.value!!.copy(
                 isLoading = false,
-                quote = quoteOfTheDay
+                quote = quoteOfTheDay.getOrNull() ?: ErrorQuote
             )
         }
     }

@@ -22,7 +22,8 @@ class QuoteListPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Quote> {
         val pageNumber = params.key ?: 1
         return try {
-            val quoteList = quoteRepository.getQuoteList(pageNumber, filter)
+            val result = quoteRepository.getQuoteList(pageNumber, filter)
+            val quoteList = result.getOrThrow()
             LoadResult.Page(
                 quoteList,
                 if (pageNumber <= 1) null else pageNumber - 1,
