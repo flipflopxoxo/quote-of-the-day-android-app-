@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.clydelizardo.quotes.qotd.QuoteOfTheDayViewModel
-import com.clydelizardo.quotes.ui.theme.PersonalityTestTheme
+import com.clydelizardo.quotes.ui.theme.QuotesTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,15 +31,12 @@ import com.clydelizardo.quotes.ui.QuoteOfTheDayPage
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-//    @Inject
-//    lateinit var quoteService: QuoteService
-
     private val quoteOfTheDayViewModel: QuoteOfTheDayViewModel by viewModels()
     private val quoteListViewModel: QuoteListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PersonalityTestTheme {
+            QuotesTestTheme {
                 // A surface container using the 'background' color from the theme
                 val tabs = mapOf(
                     "Random" to R.drawable.baseline_card_giftcard_24,
@@ -89,10 +85,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-//        GlobalScope.launch {
-//            val quoteList = quoteService.quoteList()
-//            Log.d("Quote list", quoteList.toString())
-//        }
     }
 }
 
@@ -107,7 +99,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    PersonalityTestTheme {
+    QuotesTestTheme {
         Greeting("Android")
     }
 }
