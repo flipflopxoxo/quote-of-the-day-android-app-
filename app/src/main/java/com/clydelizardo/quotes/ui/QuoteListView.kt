@@ -12,11 +12,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.clydelizardo.quotes.R
 import com.clydelizardo.quotes.repository.model.Quote
 
 @Composable
@@ -61,7 +63,7 @@ fun QuoteListView(
             } else if (loadState is LoadState.Error) {
                 item(key = Pair(loadType, loadState.javaClass)) {
                     TextButton(onClick = { lazyPagingItems.retry() }) {
-                        Text(text = "Loading failed. Retry?")
+                        Text(text = stringResource(R.string.loading_failed_retry))
                     }
                 }
             }
