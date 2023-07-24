@@ -48,12 +48,9 @@ fun SavedQuoteListView(
     onDelete: () -> Unit,
 ) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        val selectedCount = remember(selectedQuotes) {
-            selectedQuotes.size
-        }
-        val hasSelected = remember(selectedQuotes.size) {
-            selectedQuotes.isNotEmpty()
-        }
+        val selectedCount = selectedQuotes.size
+        val hasSelected = selectedQuotes.isNotEmpty()
+
         val booleanFadeTransition = remember {
             fadeTransition<Boolean>()
         }
@@ -85,8 +82,8 @@ fun SavedQuoteListView(
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            item(key = "") {
-                if (quoteList.isEmpty()) {
+            if (quoteList.isEmpty()) {
+                item(key = "noSavedQuotes") {
                     NoSavedQuotes(
                         modifier = Modifier
                             .fillMaxWidth()

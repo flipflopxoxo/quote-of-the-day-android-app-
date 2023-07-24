@@ -54,26 +54,20 @@ fun QuoteOfTheDayPage(
     onRefresh: (() -> Unit)?,
     onSave: (Quote, Boolean) -> Unit,
 ) {
-    val quote = remember(quoteOfTheDayState) {
-        quoteOfTheDayState.quote
-    }
-    val isLoading = remember(quoteOfTheDayState) {
-        quoteOfTheDayState.isLoading
-    }
-    val isSaved = remember(quoteOfTheDayState) {
-        quoteOfTheDayState.isSaved
-    }
-    val showTopBar = remember(quoteOfTheDayState) {
-        !quoteOfTheDayState.isLoading && quoteOfTheDayState.quote != null
-    }
+    val quote = quoteOfTheDayState.quote
+    val showTopBar = !quoteOfTheDayState.isLoading && quoteOfTheDayState.quote != null
+
     Scaffold(
         topBar = {
-            AnimatedContent(targetState = showTopBar, transitionSpec = fadeTransition()) {
+            val transitionSpec = remember {
+                fadeTransition<Boolean>()
+            }
+            AnimatedContent(targetState = showTopBar, transitionSpec = transitionSpec) {
                 if (it && quote != null) {
                     QuoteOfTheDayTopAppBar(
                         quote = quote,
                         onSave = onSave,
-                        isSaved = isSaved,
+                        isSaved = quoteOfTheDayState.isSaved,
                         onRefresh = onRefresh
                     )
                 }
@@ -84,7 +78,7 @@ fun QuoteOfTheDayPage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it),
-            targetState = isLoading
+            targetState = quoteOfTheDayState.isLoading
         ) { isLoading ->
             if (isLoading || quote == null) {
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -139,9 +133,7 @@ private fun QuoteOfTheDayTopAppBar(
     onRefresh: (() -> Unit)?,
 ) {
     TopAppBar(title = {}, actions = {
-        val showSave = remember(quote) {
-            quote != ErrorQuote
-        }
+        val showSave = quote != ErrorQuote
         AnimatedContent(targetState = showSave) { showSaveButton ->
             if (showSaveButton) {
                 IconButton(onClick = {

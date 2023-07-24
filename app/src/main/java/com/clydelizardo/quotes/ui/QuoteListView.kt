@@ -74,7 +74,7 @@ fun QuoteListView(
             items(lazyPagingItems.itemCount, key = { " $it" }) { index ->
                 val quote = lazyPagingItems[index]
                 val isQuoteSaved = remember(quote, savedQuotes) {
-                    savedQuotes.any { it.id == quote?.id }
+                    savedQuotes.any { savedQuote -> savedQuote.id == quote?.id }
                 }
                 if (quote != null) {
                     QuoteListItem(
