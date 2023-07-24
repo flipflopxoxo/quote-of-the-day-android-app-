@@ -15,7 +15,7 @@ val testApiQuote = Quote(
     authorPermalink = "http://google.com",
     body = "Hello world"
 )
-val testRepositoryQuote = com.clydelizardo.quotes.repository.model.Quote(
+val testRepositoryQuote = com.clydelizardo.quotes.model.Quote(
     id = 0,
     content = "Hello world",
     author = "me",

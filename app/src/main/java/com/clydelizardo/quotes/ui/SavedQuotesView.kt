@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.clydelizardo.quotes.R
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 
 fun <S> fadeTransition(): AnimatedContentScope<S>.() -> ContentTransform = {
     fadeIn(animationSpec = tween(220, delayMillis = 90)) with

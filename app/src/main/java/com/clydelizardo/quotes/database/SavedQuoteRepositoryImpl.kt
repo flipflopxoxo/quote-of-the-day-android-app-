@@ -1,7 +1,7 @@
 package com.clydelizardo.quotes.database
 
 import com.clydelizardo.quotes.database.model.Tag
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date

@@ -10,5 +10,9 @@ interface QuoteService {
     suspend fun quoteOfTheDay(): QuoteOfTheDayResponse
 
     @GET("api/quotes")
-    suspend fun quoteList(@Query("filter") filter: String? = null, @Query("type") type: String? = null, @Query("page") page: Int? = null): QuoteListResponse
+    suspend fun quoteList(
+        @Query("filter") filter: String? = null,
+        @Query("type") type: String? = null,
+        @Query("page") page: Int? = null,
+    ): QuoteListResponse
 }

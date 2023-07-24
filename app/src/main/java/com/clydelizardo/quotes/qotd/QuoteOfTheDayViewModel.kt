@@ -3,19 +3,22 @@ package com.clydelizardo.quotes.qotd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clydelizardo.quotes.database.SavedQuoteRepository
+import com.clydelizardo.quotes.di.IODispatcher
+import com.clydelizardo.quotes.model.Quote
 import com.clydelizardo.quotes.repository.QuoteRepository
-import com.clydelizardo.quotes.repository.model.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 val ErrorQuote = Quote(
-    -1,
+    id = -1,
     content = "Sorry, I couldn't find a good quote.",
     author = "the phone",
     tags = emptySet()
@@ -25,6 +28,7 @@ val ErrorQuote = Quote(
 class QuoteOfTheDayViewModel @Inject constructor(
     private val quoteRepository: QuoteRepository,
     private val savedQuoteRepository: SavedQuoteRepository,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _state = MutableStateFlow(QuoteOfTheDayState())
     val state: StateFlow<QuoteOfTheDayState>
@@ -58,7 +62,9 @@ class QuoteOfTheDayViewModel @Inject constructor(
     }
 
     private suspend fun fetchNewQuote() {
-        val quoteOfTheDay = quoteRepository.getQuoteOfTheDay()
+        val quoteOfTheDay = withContext(ioDispatcher) {
+            quoteRepository.getQuoteOfTheDay()
+        }
         val isSaved =
             savedQuoteRepository.quotes().first().any { it.id == quoteOfTheDay.getOrNull()?.id }
 

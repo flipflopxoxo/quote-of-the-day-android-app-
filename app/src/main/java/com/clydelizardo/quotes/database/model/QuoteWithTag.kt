@@ -9,5 +9,5 @@ data class QuoteWithTag(
         parentColumn = "id",
         entityColumn = "quoteId"
     )
-    val tags: List<Tag>
+    val tags: List<Tag>,
 )

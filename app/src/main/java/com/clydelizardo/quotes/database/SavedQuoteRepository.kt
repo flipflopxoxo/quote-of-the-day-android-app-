@@ -1,6 +1,6 @@
 package com.clydelizardo.quotes.database
 
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 import kotlinx.coroutines.flow.Flow
 
 interface SavedQuoteRepository {

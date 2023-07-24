@@ -1,7 +1,7 @@
 package com.clydelizardo.quotes.repository
 
 import com.clydelizardo.quotes.api.QuoteService
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 import javax.inject.Inject
 import com.clydelizardo.quotes.api.model.Quote as ApiQuote
 

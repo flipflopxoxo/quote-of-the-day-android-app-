@@ -30,9 +30,9 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.clydelizardo.quotes.R
+import com.clydelizardo.quotes.model.Quote
 import com.clydelizardo.quotes.qotd.ErrorQuote
 import com.clydelizardo.quotes.qotd.QuoteOfTheDayState
-import com.clydelizardo.quotes.repository.model.Quote
 
 @Composable
 @Preview(Devices.PIXEL_3)
