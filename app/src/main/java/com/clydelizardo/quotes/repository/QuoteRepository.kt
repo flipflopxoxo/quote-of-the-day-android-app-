@@ -1,6 +1,6 @@
 package com.clydelizardo.quotes.repository
 
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 
 interface QuoteRepository {
     suspend fun getQuoteOfTheDay(): Result<Quote>

@@ -3,7 +3,7 @@ package com.clydelizardo.quotes.repository.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.clydelizardo.quotes.repository.QuoteRepository
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 import java.lang.Exception
 import javax.inject.Inject
 

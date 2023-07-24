@@ -3,7 +3,7 @@ package com.clydelizardo.quotes.repository
 import com.clydelizardo.quotes.api.QuoteService
 import com.clydelizardo.quotes.api.model.QuoteListResponse
 import com.clydelizardo.quotes.api.model.QuoteOfTheDayResponse
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 import com.clydelizardo.quotes.testApiQuote
 import com.clydelizardo.quotes.testRepositoryQuote
 import io.mockk.coEvery

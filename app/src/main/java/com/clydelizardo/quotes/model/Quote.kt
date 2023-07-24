@@ -1,4 +1,4 @@
-package com.clydelizardo.quotes.repository.model
+package com.clydelizardo.quotes.model
 
 data class Quote(
     val id: Int,

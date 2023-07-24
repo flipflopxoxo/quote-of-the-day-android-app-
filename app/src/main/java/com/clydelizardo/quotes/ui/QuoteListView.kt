@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.clydelizardo.quotes.R
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 
 @Composable
 @Preview(Devices.PIXEL_3)

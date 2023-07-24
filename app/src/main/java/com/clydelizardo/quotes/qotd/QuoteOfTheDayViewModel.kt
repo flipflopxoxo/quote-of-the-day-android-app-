@@ -3,7 +3,7 @@ package com.clydelizardo.quotes.qotd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clydelizardo.quotes.repository.QuoteRepository
-import com.clydelizardo.quotes.repository.model.Quote
+import com.clydelizardo.quotes.model.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
