@@ -4,6 +4,7 @@ import com.clydelizardo.quotes.database.model.Tag
 import com.clydelizardo.quotes.repository.model.Quote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.util.Date
 import javax.inject.Inject
 import com.clydelizardo.quotes.database.model.Quote as DbQuote
 
@@ -45,19 +46,17 @@ class SavedQuoteRepositoryImpl @Inject constructor(
     private fun toDbQuote(quote: Quote) = DbQuote(
         id = quote.id,
         author = quote.author,
-        content = quote.content
+        content = quote.content,
+        saveTimestamp = Date()
     )
 
     override suspend fun deleteQuote(quote: Quote) {
-        quoteDao.deleteQuoteWithTag(
-            toDbQuote(quote),
-            getDbTags(quote)
+        quoteDao.deleteQuoteAndTags(
+            toDbQuote(quote).id
         )
     }
 
     override suspend fun deleteQuotes(quoteList: List<Quote>) {
-        val dbQuoteList = quoteList.map(::toDbQuote)
-        val dbTagList = quoteList.flatMap(::getDbTags)
-        quoteDao.deleteQuoteAndTagList(dbQuoteList, dbTagList)
+        quoteDao.deleteQuoteAndTagList(quoteList.map { it.id })
     }
 }

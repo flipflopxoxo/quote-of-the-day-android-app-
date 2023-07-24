@@ -13,14 +13,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuoteDao {
-    @Query("SELECT * from quote")
-    fun observableQuotes(): Flow<List<Quote>>
-
     @Query("SELECT * from quote WHERE id = :id")
     suspend fun getQuote(id: String): Quote
 
     @Transaction
-    @Query("SELECT * FROM quote")
+    @Query("SELECT * FROM quote ORDER BY saveTimestamp")
     fun observableQuoteWithTag(): Flow<List<QuoteWithTag>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -45,14 +42,24 @@ interface QuoteDao {
     }
 
     @Transaction
-    suspend fun deleteQuoteWithTag(quote: Quote, tags: List<Tag>) {
-        deleteQuote(quote)
-        deleteTags(tags)
+    suspend fun deleteQuoteAndTags(quoteId: Int) {
+        deleteQuotesWithId(quoteId)
+        deleteTagsWithId(quoteId)
     }
 
+    @Query("DELETE from quote WHERE id in (:idList)")
+    fun deleteQuotesWithId(vararg idList: Int)
+
+    @Query("DELETE from tag WHERE quoteId in (:idList)")
+    fun deleteTagsWithId(vararg idList: Int)
+
+
     @Transaction
-    suspend fun deleteQuoteAndTagList(quotes: List<Quote>, tags: List<Tag>) {
-        deleteQuoteList(quotes)
-        deleteTags(tags)
+    suspend fun deleteQuoteAndTagList(
+        quoteIdList: List<Int>,
+    ) {
+        val idList = quoteIdList.toIntArray()
+        deleteQuotesWithId(* idList)
+        deleteTagsWithId(* idList)
     }
 }
