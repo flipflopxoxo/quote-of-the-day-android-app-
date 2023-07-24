@@ -3,6 +3,7 @@ package com.clydelizardo.quotes.ui
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import com.clydelizardo.quotes.repository.model.Quote
 import com.clydelizardo.quotes.qotd.QuoteOfTheDayState
 import org.junit.Rule
 import org.junit.Test
@@ -17,14 +18,18 @@ class QuoteOfTheDayViewTest {
         composeTestRule.setContent {
             val quoteOfTheDayState = QuoteOfTheDayState(
                 isLoading = false,
-                quote = com.clydelizardo.quotes.repository.model.Quote(
+                quote = Quote(
                     id = 0,
                     content = "Hello world",
                     author = "me",
                     tags = emptySet()
                 )
             )
-            QuoteOfTheDayPage(quoteOfTheDayState = quoteOfTheDayState, onRefresh = { })
+            QuoteOfTheDayPage(
+                quoteOfTheDayState = quoteOfTheDayState,
+                onRefresh = { },
+                onSave = { _, _ -> }
+            )
         }
         composeTestRule.onNodeWithText("\"Hello world\"", substring = true).assertExists()
         composeTestRule.onNodeWithText("- me", substring = true).assertExists()
@@ -37,7 +42,8 @@ class QuoteOfTheDayViewTest {
         composeTestRule.setContent {
             QuoteOfTheDayPage(
                 quoteOfTheDayState = QuoteOfTheDayState(isLoading = true),
-                onRefresh = {}
+                onRefresh = {},
+                onSave = { _, _ -> }
             )
         }
         composeTestRule.onNodeWithText("\"Hello world\"", substring = true).assertDoesNotExist()

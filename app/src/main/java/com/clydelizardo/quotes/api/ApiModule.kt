@@ -11,11 +11,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 class ApiModule {
+    @Singleton
     @Provides
     fun quoteService(okHttpClient: OkHttpClient): QuoteService {
         val retrofit = Retrofit.Builder()

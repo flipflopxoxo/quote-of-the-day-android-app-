@@ -4,5 +4,8 @@
 
     <string name="random">Random</string>
     <string name="explore">Explore</string>
+    <string name="saved">Saved</string>
     <string name="loading_failed_retry">Loading failed. Retry?</string>
+    <string name="explore_quotes">Explore quotes</string>
+    <string name="no_saved_quotes">No saved quotes</string>
 </resources>

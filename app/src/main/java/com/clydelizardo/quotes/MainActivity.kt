@@ -25,8 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.clydelizardo.quotes.qotd.QuoteOfTheDayViewModel
 import com.clydelizardo.quotes.quoteList.QuoteListViewModel
+import com.clydelizardo.quotes.savedQuotes.SavedQuotesViewModel
 import com.clydelizardo.quotes.ui.QuoteListView
 import com.clydelizardo.quotes.ui.QuoteOfTheDayPage
+import com.clydelizardo.quotes.ui.SavedQuoteListView
 import com.clydelizardo.quotes.ui.theme.QuotesTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val quoteOfTheDayViewModel: QuoteOfTheDayViewModel by viewModels()
     private val quoteListViewModel: QuoteListViewModel by viewModels()
+    private val savedQuotesViewModel: SavedQuotesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -41,11 +44,15 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 val tabs = mapOf(
                     R.string.random to R.drawable.baseline_card_giftcard_24,
-                    R.string.explore to R.drawable.baseline_search_24
+                    R.string.explore to R.drawable.baseline_search_24,
+                    R.string.saved to R.drawable.baseline_bookmark_24
                 )
                 var selectedTab by rememberSaveable {
                     mutableStateOf(R.string.random)
                 }
+                val savedQuotes by savedQuotesViewModel.savedQuotes.collectAsState(
+                    initial = emptyList()
+                )
                 Column {
                     Surface(
                         modifier = Modifier
@@ -58,14 +65,29 @@ class MainActivity : ComponentActivity() {
                                 val quoteOfTheDayState by quoteOfTheDayViewModel.state.collectAsState()
                                 QuoteOfTheDayPage(
                                     quoteOfTheDayState = quoteOfTheDayState,
-                                    onRefresh = quoteOfTheDayViewModel::refresh
+                                    onRefresh = quoteOfTheDayViewModel::refresh,
+                                    onSave = savedQuotesViewModel::updateQuoteSavedState
                                 )
                             }
 
                             R.string.explore -> {
                                 val lazyPagingItems =
                                     quoteListViewModel.pager.collectAsLazyPagingItems()
-                                QuoteListView(lazyPagingItems)
+                                QuoteListView(
+                                    lazyPagingItems,
+                                    savedQuotes,
+                                    onSave = savedQuotesViewModel::updateQuoteSavedState
+                                )
+                            }
+
+                            R.string.saved -> {
+                                val selectedQuotes by savedQuotesViewModel.selectedQuotes.collectAsState()
+                                SavedQuoteListView(
+                                    quoteList = savedQuotes,
+                                    selectedQuotes = selectedQuotes,
+                                    onSelect = savedQuotesViewModel::updateQuoteSelected,
+                                    onDelete = savedQuotesViewModel::deleteSelectedQuotes
+                                )
                             }
                         }
                     }
