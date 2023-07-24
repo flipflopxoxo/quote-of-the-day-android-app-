@@ -7,6 +7,7 @@ import com.clydelizardo.quotes.repository.QuoteRepository
 import com.clydelizardo.quotes.testRepositoryQuote
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -20,17 +21,19 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class QuoteListViewModelTest {
+    private lateinit var testDispatcher: CoroutineDispatcher
     private lateinit var repository: QuoteRepository
     private lateinit var viewModel: QuoteOfTheDayViewModel
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
+        testDispatcher = UnconfinedTestDispatcher()
+        Dispatchers.setMain(testDispatcher)
         repository = mockk()
     }
 
     private fun createViewModel() {
-        viewModel = QuoteOfTheDayViewModel(repository)
+        viewModel = QuoteOfTheDayViewModel(repository, testDispatcher)
     }
 
     @Test
@@ -58,7 +61,10 @@ class QuoteListViewModelTest {
 
         createViewModel()
 
-        assertEquals(QuoteOfTheDayState(isLoading = false, testRepositoryQuote), viewModel.state.value)
+        assertEquals(
+            QuoteOfTheDayState(isLoading = false, testRepositoryQuote),
+            viewModel.state.value
+        )
     }
 
     @Test
@@ -69,7 +75,10 @@ class QuoteListViewModelTest {
 
         viewModel.refresh()
 
-        assertEquals(QuoteOfTheDayState(isLoading = true, testRepositoryQuote), viewModel.state.value)
+        assertEquals(
+            QuoteOfTheDayState(isLoading = true, testRepositoryQuote),
+            viewModel.state.value
+        )
     }
 
     private fun setupLoadingQotdRequest() {
@@ -103,7 +112,10 @@ class QuoteListViewModelTest {
 
         viewModel.refresh()
 
-        assertEquals(QuoteOfTheDayState(isLoading = false, testRepositoryQuote), viewModel.state.value)
+        assertEquals(
+            QuoteOfTheDayState(isLoading = false, testRepositoryQuote),
+            viewModel.state.value
+        )
     }
 
     private fun setupSuccessfulQotdResult() {

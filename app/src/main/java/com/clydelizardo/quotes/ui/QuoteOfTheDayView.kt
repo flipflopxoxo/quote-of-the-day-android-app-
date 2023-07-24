@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.clydelizardo.quotes.R
-import com.clydelizardo.quotes.qotd.QuoteOfTheDayState
 import com.clydelizardo.quotes.model.Quote
+import com.clydelizardo.quotes.qotd.QuoteOfTheDayState
 
 @Composable
 @Preview(Devices.PIXEL_3)
@@ -84,7 +84,12 @@ fun QuoteOfTheDayView(quote: Quote, onRefresh: (() -> Unit)? = null) {
             lineHeight = MaterialTheme.typography.headlineLarge.lineHeight * 1.2
         )
         if (onRefresh != null) {
-            IconButton(onClick = onRefresh, modifier = Modifier.align(Alignment.BottomEnd).testTag("refresh button")) {
+            IconButton(
+                onClick = onRefresh,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .testTag("refresh button")
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_refresh_24),
                     contentDescription = "get a new quote",

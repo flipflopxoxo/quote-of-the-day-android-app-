@@ -42,10 +42,7 @@ fun QuoteListView(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(lazyPagingItems.itemCount, key = {
-            val id = it
-            if (id != null) " $id" else "$it "
-        }) { index ->
+        items(lazyPagingItems.itemCount, key = { " $it" }) { index ->
             val quote = lazyPagingItems[index]
             if (quote != null) {
                 QuoteListItem(quote = quote)
