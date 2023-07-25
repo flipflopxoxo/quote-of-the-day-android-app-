@@ -3,8 +3,10 @@ package com.clydelizardo.quotes.savedQuotes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clydelizardo.quotes.database.SavedQuoteRepository
+import com.clydelizardo.quotes.di.IODispatcher
 import com.clydelizardo.quotes.model.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -14,13 +16,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SavedQuotesViewModel @Inject constructor(
     private val savedQuoteRepository: SavedQuoteRepository,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     val savedQuotes = savedQuoteRepository.quotes()
     private val _selectedQuotes = MutableStateFlow(emptySet<Quote>())
     val selectedQuotes = _selectedQuotes.asStateFlow()
 
     fun updateQuoteSavedState(quote: Quote, newSavedState: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             if (newSavedState) {
                 savedQuoteRepository.saveQuote(quote)
             } else {
@@ -43,18 +46,14 @@ class SavedQuotesViewModel @Inject constructor(
 
     fun updateQuoteSelected(quote: Quote, isSelected: Boolean) {
         if (isSelected) {
-            _selectedQuotes.update {
-                it + quote
-            }
+            _selectedQuotes.update { it + quote }
         } else {
-            _selectedQuotes.update {
-                it - quote
-            }
+            _selectedQuotes.update { it - quote }
         }
     }
 
     fun deleteSelectedQuotes() {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             savedQuoteRepository.deleteQuotes(_selectedQuotes.value.toList())
         }
     }
