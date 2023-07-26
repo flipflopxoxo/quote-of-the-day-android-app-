@@ -1,16 +1,19 @@
 package com.clydelizardo.quotes.quoteList
 
+import com.clydelizardo.quotes.database.SavedQuoteRepository
 import com.clydelizardo.quotes.qotd.ErrorQuote
 import com.clydelizardo.quotes.qotd.QuoteOfTheDayState
 import com.clydelizardo.quotes.qotd.QuoteOfTheDayViewModel
 import com.clydelizardo.quotes.repository.QuoteRepository
 import com.clydelizardo.quotes.testRepositoryQuote
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -23,6 +26,7 @@ import org.junit.Test
 class QuoteListViewModelTest {
     private lateinit var testDispatcher: CoroutineDispatcher
     private lateinit var repository: QuoteRepository
+    private lateinit var savedQuoteRepository: SavedQuoteRepository
     private lateinit var viewModel: QuoteOfTheDayViewModel
 
     @Before
@@ -30,10 +34,12 @@ class QuoteListViewModelTest {
         testDispatcher = UnconfinedTestDispatcher()
         Dispatchers.setMain(testDispatcher)
         repository = mockk()
+        savedQuoteRepository = mockk()
+        every { savedQuoteRepository.quotes() } returns MutableStateFlow(emptyList())
     }
 
     private fun createViewModel() {
-        viewModel = QuoteOfTheDayViewModel(repository, testDispatcher)
+        viewModel = QuoteOfTheDayViewModel(repository, savedQuoteRepository, testDispatcher)
     }
 
     @Test
