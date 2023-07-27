@@ -1,9 +1,6 @@
-package com.clydelizardo.quotes.quoteList
+package com.clydelizardo.quotes.qotd
 
 import com.clydelizardo.quotes.database.SavedQuoteRepository
-import com.clydelizardo.quotes.qotd.ErrorQuote
-import com.clydelizardo.quotes.qotd.QuoteOfTheDayState
-import com.clydelizardo.quotes.qotd.QuoteOfTheDayViewModel
 import com.clydelizardo.quotes.repository.QuoteRepository
 import com.clydelizardo.quotes.testRepositoryQuote
 import io.mockk.coEvery
@@ -18,12 +15,11 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.*
-
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class QuoteListViewModelTest {
+class QuoteOfTheDayViewModelTest {
     private lateinit var testDispatcher: CoroutineDispatcher
     private lateinit var repository: QuoteRepository
     private lateinit var savedQuoteRepository: SavedQuoteRepository
